@@ -1,0 +1,39 @@
+---
+
+- name: Update apt-get once a day
+  apt: update_cache=yes cache_valid_time=84600
+  sudo: yes
+
+- name: Ensure curl is installed
+  apt: name=curl
+  sudo: yes
+
+- name: Ensure python is installed
+  apt: name={{ item }}
+  with_items:
+   - python
+   - python-pip
+  sudo: yes
+
+- name: Install docker
+  shell: curl -sSL https://get.docker.com/ubuntu/ | sudo sh
+  args:
+    creates: /usr/bin/docker
+  sudo: yes
+
+- name: Ensure docker is running
+  service:
+    name: docker
+    state: running
+  sudo: yes
+
+- name: Add user to docker group
+  user:
+    name: "{{ docker_user }}"
+    append: yes
+    groups: docker
+  sudo: yes
+
+- name: Install docker-py
+  pip: name=docker-py
+  sudo: yes

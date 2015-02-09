@@ -1,0 +1,7 @@
+---
+
+- include: deploy.yml
+  when: stop is not defined
+
+- include: stop.yml
+  when: stop is defined
