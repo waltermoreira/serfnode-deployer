@@ -3,6 +3,8 @@
 - include: push.yml
   when: remote_registry is defined
 
+- debug: msg="Deploying serfnode {{ serfnode_name }} from image {{ image_name }}"
+
 - name: Start serfnode
   docker:
     image: "{{ image_name }}"
@@ -39,4 +41,3 @@
   run_once: yes
   delegate_to: localhost
   changed_when: false
-
