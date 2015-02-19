@@ -9,8 +9,7 @@
   docker:
     image: "{{ image_name }}"
     name: "{{ serfnode_name }}"
-    volumes:
-      - /:/host
+    volumes: "{{ volumes|union(['/:/host']) }}"
     expose: "{{ exposed_ports }}"
     ports: "{{ mapped_ports|union([7946]) }}"
     state: running
@@ -18,11 +17,12 @@
     env:
       ROLE: "{{ my_role }}"
       PEER: "{{ peer }}"
-      IP: "{{ ip }}"
+      SERF_IP: "{{ serf_ip }}"
       SERVICE_IP: "{{ service_ip }}"
       SERVICE_PORT: "{{ service_port }}"
       SERF_PORT: "{{ serf_port }}"
       RPC_PORT: "{{ rpc_port }}"
+      APP_PORTS: "{{ app_ports }}"
       APP_VOLUMES: "{{ app_volumes }}"
       APP_VOLUMES_FROM: "{{ app_volumes_from }}"
 
